@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <form>
+      <label for="hours">Hours:</label><br />
+      <input type="text" id="hours" name="hours" value="" class="Input" /><br />
+      <label for="pph">Pay Per Hours:</label><br />
+      <input type="text" id="pph" name="pph" value="" class="Input" /><br />
+      <label for="deductions">Deductions:</label><br />
+      <input type="text" id="deductions" name="deductions" value="" class="Input" /><br />
+    </form>
+    <br><button onclick="domath()">Submit</button>
+    <br><button onclick="Debug()">Debug?</button>
+    <p id="Help">PPH Means Pay Per Hour<br>OT Means Overtime<br></p>
+    <p id="Gross"></p>
+    <p id="Net"></p>
+    <p id="Test"></p>
+  </body>
+</html>
+
+<script>
+  var hoursTXT = document.getElementsByClassName("Input")[0].value;
+  var PPHTXT = document.getElementsByClassName("Input")[1].value;
+  var deductionsTXT = document.getElementsByClassName("Input")[2].value;
+  var GrossText = document.getElementById("Gross");
+  var NetText = document.getElementById("Net");
+  var DebugText = document.getElementById("Test");
+  var hours = 0.0;
+  var PPH = 0.0;
+  var PPHNotDone = 0.0;
+  var deductions = 0.0;
+  var OThours = 0.0;
+  var OTPayPPH = 0.0;
+  var FullOTPay = 0.0;
+  var GrossPayWithOutOTPay = 0.0;
+  var GrossPay = 0.0;
+  var NetPay = 0.0;
+  var Tax = 0.0;
+  var DecimalDeductions = 0.0;
+  var OThoursLimit = 40.0;
+  var Debuging = false;
+  function Debug() {
+    if(!Debuging){
+    Debuging = true;
+    }
+    else{
+    Debuging = false;
+    DebugText.innerHTML = "";
+    }
+    domath();
+  }
+  function domath() {
+    hoursTXT = document.getElementsByClassName("Input")[0].value;
+  PPHTXT = document.getElementsByClassName("Input")[1].value;
+  deductionsTXT = document.getElementsByClassName("Input")[2].value;
+    hours = parseFloat(hoursTXT);
+    PPH = parseFloat(PPHTXT);
+    deductions = parseFloat(deductionsTXT);
+
+    if (hours > OThoursLimit) {
+      OThours = hours - 40.0;
+      PPHNotDone = PPH / 2.0;
+      OTPayPPH = PPHNotDone + PPH;
+      FullOTPay = OTPayPPH * OThours;
+      hours = hours - OThours;
+    }
+    GrossPayWithOutOTPay = hours * PPH;
+    GrossPay = GrossPayWithOutOTPay + FullOTPay;
+    DecimalDeductions = deductions * 0.01;
+    Tax = GrossPay * DecimalDeductions;
+    NetPay = GrossPay - Tax;
+    GrossText.innerHTML = "Gross Pay: " + GrossPay.toString();
+    NetText.innerHTML = "Net Pay: " + NetPay.toString();
+    if(Debuging){
+    DebugText.innerHTML = "Hours: " + hours.toString() + "<br>OThours: " + OThours.toString() + "<br>OTPayPPH: " + OTPayPPH.toString() + "<br>DecimalDeductions: " + DecimalDeductions.toString() + "<br>deductions: " + deductions.toString() + "<br>Gross Pay With Out OTPay: " + GrossPayWithOutOTPay.toString() + "<br>FullOTPay: " + FullOTPay.toString() + "<br>PPH: " + PPH.toString() + "<br>Tax: " + Tax.toString();
+    }
+  }
+</script>
