@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Static Template</title>
+    <title>Calculator By: Brady</title>
   </head>
   <body>
     <form>
@@ -13,14 +13,30 @@
       <label for="pph">Pay Per Hours:</label><br />
       <input type="text" id="pph" name="pph" value="" class="Input" /><br />
       <label for="deductions">Deductions:</label><br />
-      <input type="text" id="deductions" name="deductions" value="" class="Input" /><br />
+      <input
+        type="text"
+        id="deductions"
+        name="deductions"
+        value=""
+        class="Input"
+      /><br />
     </form>
-    <br><button onclick="domath()">Submit</button>
-    <br><button onclick="Debug()">Debug?</button>
-    <p id="Help">PPH Means Pay Per Hour<br>OT Means Overtime<br></p>
+    <br /><button onclick="domath()">Submit</button> <br /><button
+      onclick="Debug()"
+    >
+      Debug?
+    </button>
+    <br /><button onclick="ShowWork()">Show Work</button>
+
+    <p id="Help">
+      PPH Means Pay Per Hour<br />OT Means Overtime<br />Debug button shows the
+      values for most things and what they are<br />ShowWork button shows the
+      work
+    </p>
     <p id="Gross"></p>
     <p id="Net"></p>
-    <p id="Test"></p>
+    <p id="Debug"></p>
+    <p id="ShowWork"></p>
   </body>
 </html>
 
@@ -30,7 +46,8 @@
   var deductionsTXT = document.getElementsByClassName("Input")[2].value;
   var GrossText = document.getElementById("Gross");
   var NetText = document.getElementById("Net");
-  var DebugText = document.getElementById("Test");
+  var DebugText = document.getElementById("Debug");
+  var ShowWorkText = document.getElementById("ShowWork");
   var hours = 0.0;
   var PPH = 0.0;
   var PPHNotDone = 0.0;
@@ -45,25 +62,47 @@
   var DecimalDeductions = 0.0;
   var OThoursLimit = 40.0;
   var Debuging = false;
+  var DoOT = false;
+  var hoursMain = 0.0;
+
+  var ShowWorkPartOne = "";
+  var GrossPaystring = "";
+  var ShowWorkBool = false;
+  var hoursstring = "";
+  var PPHstring = "";
+  var PPHNotDonestring = "";
+  var deductionsstring = "";
+  var OThoursstring = "";
+  var OTPayPPHstring = "";
+  var FullOTPaystring = "";
+  var GrossPayWithOutOTPaystring = "";
+  var NetPaystring = "";
+  var Taxstring = "";
+  var DecimalDeductionsstring = "";
+  var OThoursLimitstring = "";
+  var hoursMainstring = "";
+
   function Debug() {
-    if(!Debuging){
-    Debuging = true;
-    }
-    else{
-    Debuging = false;
-    DebugText.innerHTML = "";
+    if (!Debuging) {
+      Debuging = true;
+    } else {
+      Debuging = false;
+      DebugText.innerHTML = "";
     }
     domath();
+    ShowWork();
   }
   function domath() {
     hoursTXT = document.getElementsByClassName("Input")[0].value;
-  PPHTXT = document.getElementsByClassName("Input")[1].value;
-  deductionsTXT = document.getElementsByClassName("Input")[2].value;
+    PPHTXT = document.getElementsByClassName("Input")[1].value;
+    deductionsTXT = document.getElementsByClassName("Input")[2].value;
     hours = parseFloat(hoursTXT);
+    hoursMain = hours;
     PPH = parseFloat(PPHTXT);
     deductions = parseFloat(deductionsTXT);
 
     if (hours > OThoursLimit) {
+      DoOT = true;
       OThours = hours - 40.0;
       PPHNotDone = PPH / 2.0;
       OTPayPPH = PPHNotDone + PPH;
@@ -77,8 +116,112 @@
     NetPay = GrossPay - Tax;
     GrossText.innerHTML = "Gross Pay: " + GrossPay.toString();
     NetText.innerHTML = "Net Pay: " + NetPay.toString();
-    if(Debuging){
-    DebugText.innerHTML = "Hours: " + hours.toString() + "<br>OThours: " + OThours.toString() + "<br>OTPayPPH: " + OTPayPPH.toString() + "<br>DecimalDeductions: " + DecimalDeductions.toString() + "<br>deductions: " + deductions.toString() + "<br>Gross Pay With Out OTPay: " + GrossPayWithOutOTPay.toString() + "<br>FullOTPay: " + FullOTPay.toString() + "<br>PPH: " + PPH.toString() + "<br>Tax: " + Tax.toString();
+    if (Debuging) {
+      DebugText.innerHTML =
+        "Debug<br><br>" +
+        "Hours: " +
+        hours.toString() +
+        "<br>OThours: " +
+        OThours.toString() +
+        "<br>OTPayPPH: " +
+        OTPayPPH.toString() +
+        "<br>DecimalDeductions: " +
+        DecimalDeductions.toString() +
+        "<br>deductions: " +
+        deductions.toString() +
+        "<br>Gross Pay With Out OTPay: " +
+        GrossPayWithOutOTPay.toString() +
+        "<br>FullOTPay: " +
+        FullOTPay.toString() +
+        "<br>PPH: " +
+        PPH.toString() +
+        "<br>Tax: " +
+        Tax.toString();
+    }
+    if (ShowWorkBool) {
+      ShowWork();
+    }
+  }
+
+  function ShowWork() {
+    if (!ShowWorkBool) {
+      ShowWorkBool = true;
+      hoursstring = hours.toString();
+      PPHstring = PPH.toString();
+      PPHNotDonestring = PPHNotDone.toString();
+      deductionsstring = deductions.toString();
+      OThoursstring = OThours.toString();
+      OTPayPPHstring = OTPayPPH.toString();
+      FullOTPaystring = FullOTPay.toString();
+      GrossPayWithOutOTPaystring = GrossPayWithOutOTPay.toString();
+      GrossPaystring = GrossPay.toString();
+      NetPaystring = NetPay.toString();
+      Taxstring = Tax.toString();
+      hoursMainstring = hoursMain.toString();
+      DecimalDeductionsstring = DecimalDeductions.toString();
+      OThoursLimitstring = OThoursLimit.toString();
+      if (DoOT) {
+        var one = hoursMainstring + " - 40 = " + OThoursstring + "<br>";
+        var two = PPHstring + "/2 = " + PPHNotDonestring + "<br>";
+        var three =
+          PPHNotDonestring +
+          " + " +
+          PPHstring +
+          " = " +
+          OTPayPPHstring +
+          "<br>";
+        var four =
+          OTPayPPHstring +
+          " * " +
+          OThoursstring +
+          " = " +
+          FullOTPaystring +
+          "<br>";
+      }
+      var five =
+        hoursstring +
+        " * " +
+        PPHstring +
+        " = " +
+        GrossPayWithOutOTPaystring +
+        "<br>";
+      var six =
+        GrossPayWithOutOTPaystring +
+        " + " +
+        FullOTPaystring +
+        " = " +
+        GrossPaystring +
+        "<br>";
+      var seven =
+        deductionsstring + " * 0.01 = " + DecimalDeductionsstring + "<br>";
+      var eight =
+        GrossPaystring +
+        " * " +
+        DecimalDeductionsstring +
+        " = " +
+        Taxstring +
+        "<br>";
+      var nine =
+        GrossPaystring + " - " + Taxstring + " = " + NetPaystring + "<br>";
+
+      ShowWorkPartOne = one + two + three + four;
+      if (DoOT) {
+        ShowWorkText.innerHTML =
+          "ShowWork<br>" +
+          "<br>OverTime<br><br>" +
+          ShowWorkPartOne +
+          "<br>Everthing Else<br><br>" +
+          five +
+          six +
+          seven +
+          eight +
+          nine;
+      } else {
+        ShowWorkText.innerHTML = "ShowWork<br>" + five + seven + eight + nine;
+      }
+    } else {
+      ShowWorkBool = false;
+      ShowWorkText.innerHTML = "";
     }
   }
 </script>
