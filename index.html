@@ -100,14 +100,15 @@
     hoursMain = hours;
     PPH = parseFloat(PPHTXT);
     deductions = parseFloat(deductionsTXT);
-
-    if (hours > OThoursLimit) {
+    if (hoursMain > 40.0) {
       DoOT = true;
       OThours = hours - 40.0;
       PPHNotDone = PPH / 2.0;
       OTPayPPH = PPHNotDone + PPH;
       FullOTPay = OTPayPPH * OThours;
       hours = hours - OThours;
+    } else {
+      DoOT = false;
     }
     GrossPayWithOutOTPay = hours * PPH;
     GrossPay = GrossPayWithOutOTPay + FullOTPay;
@@ -123,6 +124,8 @@
         hours.toString() +
         "<br>OThours: " +
         OThours.toString() +
+        "<br>DoOT: " +
+        DoOT.toString() +
         "<br>OTPayPPH: " +
         OTPayPPH.toString() +
         "<br>DecimalDeductions: " +
